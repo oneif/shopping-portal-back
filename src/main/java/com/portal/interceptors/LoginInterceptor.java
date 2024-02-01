@@ -19,9 +19,9 @@ public class LoginInterceptor implements HandlerInterceptor {
             Map<String, Object> claims = JwtUtil.parseToken(token);
             return true;
         } catch (Exception e) {
-            response.setStatus(401);
+            response.setStatus(403);
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"code\":\"401\",\"message\":\"没有访问权限，请登录后重试\",\"data\":\"null\"}");
+            response.getWriter().write("{\"code\":\"403\",\"message\":\"没有访问权限，请登录后重试\",\"data\":\"null\"}");
             return false;
         }
     }
