@@ -1,16 +1,17 @@
 package com.portal.controller;
 
 import com.portal.pojo.Result;
-import com.portal.utils.JwtUtil;
-import com.portal.utils.Md5Util;
 import com.portal.pojo.User;
 import com.portal.service.UserService;
+import com.portal.utils.JwtUtil;
+import com.portal.utils.Md5Util;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Pattern(regexp = "^\\S{4,16}$") String username, @Pattern(regexp = "^\\S{4,16}$") String password) {
+    public Result register(@Pattern(regexp = "^\\S{4,16}$") String username, String password) {
         // 查询用户名
         User user = userService.findByUserName(username);
         if (user == null) {
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<String> login(@Pattern(regexp = "^\\S{4,16}$") String username, @Pattern(regexp = "^\\S{4,16}$") String password) {
+    public Result<String> login(@Pattern(regexp = "^\\S{4,16}$") String username, String password) {
         // 查询用户名
         User loginUser = userService.findByUserName(username);
         // 判断用户是否存在
