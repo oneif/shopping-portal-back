@@ -1,5 +1,6 @@
 package com.portal.controller;
 
+import com.portal.DTO.UserDTO;
 import com.portal.pojo.Result;
 import com.portal.pojo.User;
 import com.portal.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,5 +54,26 @@ public class UserController {
             return Result.success("登录成功", token);
         }
         return Result.error("密码错误");
+    }
+
+    @PostMapping("/detail")
+    public Result<UserDTO> detail(String username) {
+        // 查询用户名
+        User loginUser = userService.findByUserName(username);
+        // 判断用户是否存在
+        if (loginUser == null) return Result.error("用户名错误");
+        else {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(loginUser.getId());
+            userDTO.setUsername(loginUser.getUsername());
+            userDTO.setNickname(loginUser.getNickname());
+            userDTO.setEmail(loginUser.getEmail());
+            userDTO.setUserPic(loginUser.getUserPic());
+
+            userDTO.setCreateTime(loginUser.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            userDTO.setUpdateTime(loginUser.getUpdateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            return Result.success("成功", userDTO);
+        }
     }
 }
